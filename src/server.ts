@@ -8,7 +8,7 @@ const server = http.createServer((req, res) => {
     const route = routes.find((route) => route.method === method && route.path === url)
 
     if (route) {
-        return route.handler
+        return route.handler(res)
     }
 
     return res.writeHead(404).end()
