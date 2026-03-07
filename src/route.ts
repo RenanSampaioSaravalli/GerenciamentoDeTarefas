@@ -1,5 +1,6 @@
 import { randomUUID } from "node:crypto"
-import http from 'node:http'
+import type {ServerResponse, IncomingMessage} from 'node:http'
+import { Database } from "./database.js"
 
 interface Tarefa {
     id: string,
@@ -12,11 +13,13 @@ interface Tarefa {
 
 const tarefas : Tarefa[] = []
 
+const db = new Database()
+
 export const routes = [
     {
         method: 'POST',
         path: '/tasks',
-        handler: (res: http.ServerResponse<http.IncomingMessage>) => {
+        handler: (res: ServerResponse<IncomingMessage>) => {
             tarefas.push({
                 id: randomUUID(),
                 title: 'Virar SÊNIOR',
@@ -31,7 +34,7 @@ export const routes = [
     {
         method: 'GET',
         path: '/tasks',
-        handler: (res: http.ServerResponse<http.IncomingMessage>) => {
+        handler: (res: ServerResponse<IncomingMessage>) => {
             res.setHeader('Content-type', 'application/json').end(JSON.stringify(tarefas))
         }
     }
